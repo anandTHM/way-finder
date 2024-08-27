@@ -183,7 +183,7 @@ const Event = () => {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                p: 2,
+                p: 1,
                 m: 2,
                 bgcolor: "background.paper",
                 borderRadius: 1,

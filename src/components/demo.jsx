@@ -55,7 +55,7 @@ const categories = [
     icon: Icons.laptop,
   },
   {
-    name:"Cloths",
+    name:"Clothes",
     color:"#FFEDE8",
     icon:Icons.mens,
   },
