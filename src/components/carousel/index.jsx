@@ -9,6 +9,8 @@ import empty from "../../assets/empty.svg";
 import Model from "../Model";
 import { fetchData } from "../../apiService";
 
+const organizationId = localStorage.getItem("Organization");
+
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
 function CustomCarousel({ offers, has, isPortrait }) {
   const theme = useTheme();
@@ -36,7 +38,6 @@ function CustomCarousel({ offers, has, isPortrait }) {
   };
 
   const onSubmitHandler = async (payload) => {
-    console.log(payload);
     const url = "/sendMail";
     const queryParams = {
       organizationId: organizationId,

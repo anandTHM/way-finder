@@ -16,8 +16,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function Model({ open, handleClose, hasIcon, onSubmitHandler, selectedUnit }) {
-  console.log(selectedUnit);
-
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [mobile, setMobile] = useState("");
@@ -55,8 +53,15 @@ function Model({ open, handleClose, hasIcon, onSubmitHandler, selectedUnit }) {
         if (error.email) setError((prev) => ({ ...prev, email: "" }));
         break;
       case "mobile":
-        setMobile(value);
-        if (error.mobile) setError((prev) => ({ ...prev, mobile: "" }));
+        if (/^\d*$/.test(value)) {
+          setMobile(value);
+          if (error.mobile) setError((prev) => ({ ...prev, mobile: "" }));
+        } else {
+          setError((prev) => ({
+            ...prev,
+            mobile: "Please enter a valid mobile number",
+          }));
+        }
         break;
       case "comments":
         setComments(value);
@@ -74,7 +79,6 @@ function Model({ open, handleClose, hasIcon, onSubmitHandler, selectedUnit }) {
       return;
     }
 
-    
     const payload = {
       name,
       mobile: Number(mobile),
@@ -85,7 +89,6 @@ function Model({ open, handleClose, hasIcon, onSubmitHandler, selectedUnit }) {
 
     setLoading(true);
     try {
-      console.log("===========")
       await onSubmitHandler(payload);
       setName("");
       setEmail("");
@@ -94,18 +97,22 @@ function Model({ open, handleClose, hasIcon, onSubmitHandler, selectedUnit }) {
       setError({});
       handleClose();
       toast.success("Submitted successfully", {
-        style: { fontSize: '18px', padding: '16px' },
-        bodyStyle: { fontSize: '18px' },
+        style: { fontSize: "18px", padding: "16px" },
+        bodyStyle: { fontSize: "18px" },
       });
     } catch (err) {
+      console.log(err)
       setError({
         submit:
           "An error occurred while submitting your details. Please try again.",
       });
-      toast.error("An error occurred while submitting your details. Please try again.", {
-        style: { fontSize: '18px', padding: '16px' },
-        bodyStyle: { fontSize: '18px' },
-      });
+      toast.error(
+        "An error occurred while submitting your details. Please try again.",
+        {
+          style: { fontSize: "18px", padding: "16px" },
+          bodyStyle: { fontSize: "18px" },
+        }
+      );
     } finally {
       setLoading(false);
     }

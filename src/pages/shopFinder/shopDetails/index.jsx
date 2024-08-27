@@ -19,8 +19,11 @@ function ShopDetails() {
   const [listingDetails, setListingsDetails] = useState([]);
   const [error, setError] = useState("");
 
-  console.log("===========",offers.length)
-
+  const displayNameField = param?.customFields?.filter(
+    (field) =>
+      field.fieldLabel?.toLowerCase().includes("display name")
+  )[0];
+  
   const isPortrait = useMediaQuery("(orientation: portrait)");
 
   const { setSelectedUnit, setDefaultRoute, setSelectedPath } =
@@ -113,7 +116,6 @@ function ShopDetails() {
                   display: "flex",
                   alignItems: "start",
                   cursor: "pointer",
-                
                 }}
               >
                 <ArrowBackIcon sx={{ fontSize: "2.5rem" }} />
@@ -123,12 +125,16 @@ function ShopDetails() {
             <Grid
               item
               xs={1}
-              sx={{ display: "flex", alignItems: "center", p: 3 }}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                paddingRight: "20px",
+              }}
             >
               <img
                 src={param?.photos[0]?.aws_url || empty}
                 alt="Store"
-                style={{ width: "110%", height: "auto", marginLeft: "-5%" }} // Increase width and adjust margin to center the image
+                style={{ width: "120%", height: "auto", marginLeft: "-5%" }}
               />
             </Grid>
 
@@ -143,7 +149,7 @@ function ShopDetails() {
             >
               <Typography variant="h6" sx={{ fontSize: "26px" }}>
                 {" "}
-                {param?.block}
+                { displayNameField?.fieldValue ||   param?.block}
               </Typography>
               <Typography variant="body1">
                 Floor: Ground Floor | Store No: U670
@@ -193,7 +199,7 @@ function ShopDetails() {
                       backgroundColor: "#5C0F34",
                     },
                     ml: 2, //
-                    minWidth: "auto", 
+                    minWidth: "auto",
                   }}
                   startIcon={
                     <img src={direction} width={"20px"} alt="Direction icon" />

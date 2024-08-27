@@ -1,6 +1,6 @@
 // export const DOMAIN = 'https://dashboard.thehousemonk.com/shared-resource/way-finder';
-export const DOMAIN = 'https://staging.thehousemonk.com/shared-resource/way-finder';
-// export const DOMAIN = "http://localhost:9000/shared-resource/way-finder";
+// export const DOMAIN = 'https://staging.thehousemonk.com/shared-resource/way-finder';
+export const DOMAIN = "http://localhost:9000/shared-resource/way-finder";
 
 const buildQueryString = (params) => {
   const queryParams = new URLSearchParams(params);

@@ -153,7 +153,7 @@ const EventsCardCarousel = () => {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const [open, setOpen] = useState(false);
-  const smplrSpaceId= localStorage.getItem("ScreenId")
+  const smplrSpaceId = localStorage.getItem("ScreenId");
 
   const fetchEvents = useCallback(async () => {
     setLoading(true);
@@ -164,7 +164,7 @@ const EventsCardCarousel = () => {
       organizationId: organizationId,
       startDate: "",
       sort: "earliestToLatest",
-      smplrSpaceId:smplrSpaceId,
+      smplrSpaceId: smplrSpaceId,
     };
 
     try {
@@ -219,12 +219,12 @@ const EventsCardCarousel = () => {
   };
 
   const sliderSettingsTodays = getSliderSettings(
-    allTodaysEvents.length,
+    allTodaysEvents?.length,
     currentSlideTodays,
     setCurrentSlideTodays
   );
   const sliderSettingsUpcoming = getSliderSettings(
-    allEvents.length,
+    allEvents?.length,
     currentSlideUpcoming,
     setCurrentSlideUpcoming
   );
@@ -280,7 +280,7 @@ const EventsCardCarousel = () => {
                 <Typography variant="h5" sx={{ fontSize: 22 }}>
                   Happening Now
                 </Typography>
-                {allTodaysEvents.length > 3 && (
+                {allTodaysEvents?.length > 3 && (
                   <Typography
                     variant="h5"
                     sx={{ fontSize: 22, cursor: "pointer", color: "#7E1946" }}
@@ -300,7 +300,7 @@ const EventsCardCarousel = () => {
                     gap: 2,
                   }}
                 >
-                  {allTodaysEvents.slice(0, 2).map((card, index) => (
+                  {allTodaysEvents?.slice(0, 2).map((card, index) => (
                     <EventsCard
                       key={index}
                       price={card?.bookingInfo?.rate}
@@ -310,9 +310,9 @@ const EventsCardCarousel = () => {
                     />
                   ))}
                 </Box>
-              ) : allTodaysEvents.length > 3 ? (
+              ) : allTodaysEvents?.length > 3 ? (
                 <Slider {...sliderSettingsTodays} ref={setSliderRef}>
-                  {allTodaysEvents.map((card, index) => (
+                  {allTodaysEvents?.map((card, index) => (
                     <Box key={index}>
                       <EventsCard
                         price={card?.bookingInfo?.rate}
@@ -331,7 +331,7 @@ const EventsCardCarousel = () => {
                     gap: 1,
                   }}
                 >
-                  {allTodaysEvents.slice(0, 3).map((card, index) => (
+                  {allTodaysEvents?.slice(0, 3).map((card, index) => (
                     <EventsCard
                       key={index}
                       price={card?.bookingInfo?.rate}
@@ -347,18 +347,19 @@ const EventsCardCarousel = () => {
 
           {/* Upcoming Events */}
           <Box sx={{ my: 2 }}>
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                mx: 2,
-              }}
-            >
-              <Typography variant="h5" sx={{ fontSize: 22 }}>
-                Upcoming Events
-              </Typography>
-              {allEvents.length > 3 && (
+            {allEvents?.length > 3 && (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  mx: 2,
+                }}
+              >
+                <Typography variant="h5" sx={{ fontSize: 22 }}>
+                  Upcoming Events
+                </Typography>
+
                 <Typography
                   variant="h5"
                   sx={{ fontSize: 22, cursor: "pointer", color: "#7E1946" }}
@@ -366,8 +367,8 @@ const EventsCardCarousel = () => {
                 >
                   View all
                 </Typography>
-              )}
-            </Box>
+              </Box>
+            )}
             <Box sx={{ position: "relative" }}>
               {isPortrait ? (
                 <Box
@@ -377,7 +378,7 @@ const EventsCardCarousel = () => {
                     gap: 2,
                   }}
                 >
-                  {allEvents.slice(0, 4).map((card, index) => (
+                  {allEvents?.slice(0, 4).map((card, index) => (
                     <EventsCard
                       key={index}
                       price={card?.bookingInfo?.rate}
@@ -387,7 +388,7 @@ const EventsCardCarousel = () => {
                     />
                   ))}
                 </Box>
-              ) : allEvents.length > 3 ? (
+              ) : allEvents?.length > 3 ? (
                 <Slider {...sliderSettingsUpcoming} ref={setSliderRef1}>
                   {allEvents.map((card, index) => (
                     <Box key={index}>
@@ -408,7 +409,7 @@ const EventsCardCarousel = () => {
                     gap: 2,
                   }}
                 >
-                  {allEvents.slice(0, 3).map((card, index) => (
+                  {allEvents?.slice(0, 3).map((card, index) => (
                     <EventsCard
                       key={index}
                       price={card?.bookingInfo?.rate}

@@ -18,7 +18,7 @@ import NavigationShop from "./pages/navigation/shop";
 const RoutesComponent = () => {
   const router = createBrowserRouter(
     createRoutesFromElements(
-      <Route path=":4465f759-0b37-4353-8772-8e17440558ed" element={<Header />}>
+      <Route path=":id" element={<Header />}>
         <Route index element={<Navigation />} />
         <Route path="navigation" element={<Navigation />} />
         <Route path="amenities" element={<Amenities />} />
