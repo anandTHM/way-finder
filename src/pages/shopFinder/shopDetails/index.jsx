@@ -149,7 +149,7 @@ function ShopDetails() {
             >
               <Typography variant="h6" sx={{ fontSize: "26px" }}>
                 {" "}
-                { displayNameField?.fieldValue ||   param?.block}
+                { displayNameField?.feildValue ||   param?.block}
               </Typography>
               <Typography variant="body1">
                 Floor: Ground Floor | Store No: U670

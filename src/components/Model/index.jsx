@@ -101,7 +101,6 @@ function Model({ open, handleClose, hasIcon, onSubmitHandler, selectedUnit }) {
         bodyStyle: { fontSize: "18px" },
       });
     } catch (err) {
-      console.log(err)
       setError({
         submit:
           "An error occurred while submitting your details. Please try again.",
@@ -166,139 +165,71 @@ function Model({ open, handleClose, hasIcon, onSubmitHandler, selectedUnit }) {
               <Typography variant="h5" sx={{ fontSize: "18px" }}>
                 {selectedUnit && "Enter your details "}
               </Typography>
-              <TextField
-                autoFocus
-                label="Name"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={name}
-                onChange={(e) => handleChange(e, "name")}
-                error={!!error.name}
-                helperText={error.name}
-                sx={{
-                  "& .MuiInputLabel-root": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiInputBase-input": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiFormHelperText-root": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#7E1946",
-                    },
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#7E1946",
-                  },
-                  "& input:-webkit-autofill": {
-                    WebkitBoxShadow: "0 0 0 1000px white inset",
-                    WebkitTextFillColor: "#000000",
-                  },
-                }}
-              />
-              <TextField
-                label="Email ID"
-                type="email"
-                fullWidth
-                variant="outlined"
-                value={email}
-                onChange={(e) => handleChange(e, "email")}
-                error={!!error.email}
-                helperText={error.email}
-                sx={{
-                  "& .MuiInputLabel-root": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiInputBase-input": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiFormHelperText-root": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#7E1946",
-                    },
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#7E1946",
-                  },
-                  "& input:-webkit-autofill": {
-                    WebkitBoxShadow: "0 0 0 1000px white inset",
-                    WebkitTextFillColor: "#000000",
-                  },
-                }}
-              />
-              <TextField
-                label="Mobile Number"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={mobile}
-                onChange={(e) => handleChange(e, "mobile")}
-                error={!!error.mobile}
-                helperText={error.mobile}
-                sx={{
-                  "& .MuiInputLabel-root": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiInputBase-input": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiFormHelperText-root": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#7E1946",
-                    },
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#7E1946",
-                  },
-                  "& input:-webkit-autofill": {
-                    WebkitBoxShadow: "0 0 0 1000px white inset",
-                    WebkitTextFillColor: "#000000",
-                  },
-                }}
-              />
-              <TextField
-                label="Comments"
-                type="text"
-                fullWidth
-                variant="outlined"
-                value={comments}
-                onChange={(e) => handleChange(e, "comments")}
-                sx={{
-                  "& .MuiInputLabel-root": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiInputBase-input": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiFormHelperText-root": {
-                    fontSize: "18px",
-                  },
-                  "& .MuiOutlinedInput-root": {
-                    "&.Mui-focused fieldset": {
-                      borderColor: "#7E1946",
-                    },
-                  },
-                  "& .MuiInputLabel-root.Mui-focused": {
-                    color: "#7E1946",
-                  },
-                  "& input:-webkit-autofill": {
-                    WebkitBoxShadow: "0 0 0 1000px white inset",
-                    WebkitTextFillColor: "#000000",
-                  },
-                }}
-                multiline
-                rows={3}
-              />
+              {["Name", "Email Id", "Mobile Number", "Comments"].map(
+                (label, index) => (
+                  <TextField
+                    key={label}
+                    autoFocus={index === 0}
+                    label={label}
+                    type={label === "Email ID" ? "email" : "text"}
+                    fullWidth
+                    variant="outlined"
+                    value={
+                      label === "Name"
+                        ? name
+                        : label === "Email ID"
+                        ? email
+                        : label === "Mobile Number"
+                        ? mobile
+                        : comments
+                    }
+                    onChange={(e) =>
+                      handleChange(
+                        e,
+                        label === "Name"
+                          ? "name"
+                          : label === "Email ID"
+                          ? "email"
+                          : label === "Mobile Number"
+                          ? "mobile"
+                          : "comments"
+                      )
+                    }
+                    error={!!error[label.toLowerCase().replace(" ", "")]}
+                    helperText={error[label.toLowerCase().replace(" ", "")]}
+                    multiline={label === "Comments"}
+                    rows={label === "Comments" ? 3 : 1}
+                    sx={{
+                      "& .MuiInputLabel-root": {
+                        fontSize: "18px",
+                        backgroundColor: "white",
+                        padding: "0 4px",
+                      },
+                      "& .MuiInputBase-input": {
+                        fontSize: "18px",
+                      },
+                      "& .MuiFormHelperText-root": {
+                        fontSize: "18px",
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#7E1946",
+                        },
+                      },
+                      "& .MuiInputLabel-root.Mui-focused": {
+                        color: "#7E1946",
+                      },
+                      "& input:-webkit-autofill": {
+                        WebkitBoxShadow: "0 0 0 1000px white inset",
+                        WebkitTextFillColor: "#000000",
+                      },
+                      "& .MuiInputLabel-shrink": {
+                        transform: "translate(14px, -9px) scale(0.75)",
+                      },
+                    }}
+                  />
+                )
+              )}
               {error.submit && (
                 <Typography variant="body2" color="error" sx={{ mt: 2 }}>
                   {error.submit}

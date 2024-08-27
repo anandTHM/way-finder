@@ -38,7 +38,7 @@ const categories = [
     icon: Icons.game,
   },
   {
-    name: "Food and Beverage ",
+    name: "Food & Beverage ",
     color: "#FFF1F1",
     icon: Icons.food,
   },

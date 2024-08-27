@@ -352,6 +352,13 @@ function Header() {
                           fontSize: { xs: "0.75rem", sm: "1.2rem" },
                           letterSpacing: "0.1rem",
                           fontWeight: 400,
+                          "&:hover": {
+                            border:
+                              page.name === defaultRoute
+                                ? "2px solid #7E1946"
+                                : "2px solid rgba(217, 217, 217, 1)",
+                            backgroundColor: "transparent",
+                          },
                         }}
                         variant="outlined"
                         onClick={() => handleTabSwitch(page.name)}

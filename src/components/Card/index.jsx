@@ -9,6 +9,11 @@ const CustomCard = ({ item, onClick, has, color, icon, selected, small }) => {
   const theme = useTheme();
   const isPortrait = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const displayNameField = item?.customFields?.filter(
+    (field) =>
+      field.fieldLabel?.toLowerCase().includes("display name")
+  )[0];
+
   return (
     <Box
       sx={{
@@ -85,7 +90,7 @@ const CustomCard = ({ item, onClick, has, color, icon, selected, small }) => {
             textOverflow: "ellipsis",
           }}
         >
-          {item.block || item.name}
+          { displayNameField?.feildValue || item.block || item.name}
         </Typography>
       </Box>
       {has && (
