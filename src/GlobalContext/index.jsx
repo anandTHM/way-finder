@@ -20,6 +20,7 @@ const ContextConsumer = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("Organization", organizationId);
     sessionStorage.setItem("defaultRoute", defaultRoute);
+    setSelectedCategories([])
   }, [defaultRoute, organizationId]);
 
   const contextValue = useMemo(

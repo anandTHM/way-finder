@@ -84,6 +84,9 @@ const theme = createTheme({
 function CategorySelector({ open, onClose, onSelectCategories, searchTerm }) {
   const { selectedCategories, setSelectedCategories } =
     useContext(ContextProvider);
+
+  console.log("selectedCategories", selectedCategories);
+
   const isPortrait = useMediaQuery("(orientation: portrait)");
 
   const offersInputData = searchTerm

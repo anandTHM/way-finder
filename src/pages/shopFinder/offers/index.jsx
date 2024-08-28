@@ -272,7 +272,7 @@ const Offers = () => {
       >
         <ArrowBackIcon
           sx={{ fontSize: "2rem", cursor: "pointer" }}
-          onClick={() => navigate(-1)}
+          onClick={() =>{ setSelectedCategories([]); navigate(-1)}}
         />
         <Typography variant="h5" sx={{ fontSize: "1.5rem" }}>
           Offers
