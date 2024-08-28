@@ -134,7 +134,7 @@ function ShopDetails() {
               <img
                 src={param?.photos[0]?.aws_url || empty}
                 alt="Store"
-                style={{ width: "120%", height: "auto", marginLeft: "-5%" }}
+                style={{ width: "120%", height: "auto", marginLeft: "-5%", border:"1.5px solid #E4E4E4" }}
               />
             </Grid>
 
