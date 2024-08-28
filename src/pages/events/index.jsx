@@ -156,6 +156,8 @@ const EventsCardCarousel = () => {
   const [open, setOpen] = useState(false);
   const smplrSpaceId = localStorage.getItem("ScreenId");
 
+  console.log("==",open)
+
   const fetchEvents = useCallback(async () => {
     setLoading(true);
     const url = "/events";
@@ -197,22 +199,22 @@ const EventsCardCarousel = () => {
   }, [fetchEvents]);
 
   useEffect(() => {
-    if (sliderRef) {
+    if (sliderRef && !open ) {
       const interval = setInterval(() => {
         sliderRef.slickNext();
-      }, 3000);
+      }, 2000);
       return () => clearInterval(interval);
     }
-  }, [sliderRef]);
+  }, [sliderRef,open]);
 
   useEffect(() => {
-    if (sliderRef1) {
+    if (sliderRef1 &&  !open ) {
       const interval = setInterval(() => {
         sliderRef1.slickNext();
-      }, 3000);
+      }, 2000);
       return () => clearInterval(interval);
     }
-  }, [sliderRef1]);
+  }, [sliderRef1,open]);
 
   const onClickViewHandler = (param) => {
     const id = localStorage.getItem("ScreenId");

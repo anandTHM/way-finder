@@ -60,10 +60,12 @@ function CustomCarousel({ offers, has, isPortrait }) {
   };
 
   const handleSwipe = (index) => {
-    if (index >= maxSteps) {
-      setActiveStep(0);
-    } else {
-      setActiveStep(index);
+    if(!open){
+      if (index >= maxSteps) {
+        setActiveStep(0);
+      } else {
+        setActiveStep(index);
+      }
     }
   };
 
