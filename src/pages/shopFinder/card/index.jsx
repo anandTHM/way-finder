@@ -52,6 +52,7 @@ function ShopFinderCard({ icon, title, backgroundColor, onClick }) {
               width: "100%",
               objectFit: "contain",
               borderRadius: "5px",
+              border:"1.5px solid #E4E4E4"
             }}
             image={icon || empty}
             title="Card image"

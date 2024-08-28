@@ -8,6 +8,7 @@ import { useMediaQuery } from "@mui/material";
 import Shops from "./shop";
 import "./navigation.css";
 import { ContextProvider } from "../../GlobalContext";
+import icon from "../../assets/yourAreHere.svg";
 
 const Navigation = () => {
   const spaceRef = React.useRef();
@@ -45,26 +46,6 @@ const Navigation = () => {
       .catch((error) => console.error(error));
   }, []);
 
-
-  useEffect(() => {
-    fetch('https://ipinfo.io/json?token=9a4910bcc76590') 
-      .then(response => response.json())
-      .then(data => {
-        const loc = data.loc.split(',');
-        const lat = loc[0];
-        const lng = loc[1];
-        console.log(`Latitude: ${lat}, Longitude: ${lng}`);
-        
-        return fetch(`https://api.sunrisesunset.io/json?lat=${lat}&lng=${lng}`);
-      })
-      .then(response => response.json())
-      .then(data => {
-        console.log(data);
-      })
-      .catch(error => {
-        console.error("Error fetching data:", error);
-      });
-  }, []);
 
   useEffect(() => {
     if (!viewerReady) return;

@@ -16,6 +16,7 @@ import Model from "../../components/Model";
 import "./events.css";
 
 export function EventsCard({ price, image, data, onClick }) {
+  console.log(data)
   return (
     <Card
       sx={{
@@ -77,7 +78,7 @@ export function EventsCard({ price, image, data, onClick }) {
               {price > 0 ? `$${price}` : "Free"}
             </Typography>
             {price > 0 && (
-              <Typography sx={{ fontSize: "14px", color: "text.secondary" }}>
+              <Typography sx={{ fontSize: "14px", color: "#000000" }}>
                 Per Person
               </Typography>
             )}

@@ -27,6 +27,7 @@ function Header() {
   const [currentTime, setCurrentTime] = useState("");
   const [currentDate, setCurrentDate] = useState("");
   const [activeButton, setActiveButton] = useState("Shop");
+  const [dayLight, setDayLight] = useState(null);
 
   const { defaultRoute, setDefaultRoute } = useContext(ContextProvider);
 
@@ -36,6 +37,27 @@ function Header() {
   const handleTabSwitch = (text) => {
     setDefaultRoute(text);
   };
+
+  useEffect(() => {
+    fetch("https://ipinfo.io/json?token=9a4910bcc76590")
+      .then((response) => response.json())
+      .then((data) => {
+        const loc = data.loc.split(",");
+        const lat = loc[0];
+        const lng = loc[1];
+        console.log(`Latitude: ${lat}, Longitude: ${lng}`);
+
+        return fetch(`https://api.sunrisesunset.io/json?lat=${lat}&lng=${lng}`);
+      })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(" Sunrise:", data.results);
+        setDayLight(data.results);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
 
   useEffect(() => {
     const updateDateTime = () => {
@@ -74,6 +96,14 @@ function Header() {
     return () => clearInterval(intervalId);
   }, []);
 
+  const isNightTime = () => {
+    if (!dayLight) return false;
+    const now = new Date();
+    const sunrise = new Date(`${now.toDateString()} ${dayLight.sunrise}`);
+    const sunset = new Date(`${now.toDateString()} ${dayLight.sunset}`);
+    return now < sunrise || now > sunset;
+  };
+
   const handleButtonClick = (page) => {
     setActiveButton(page === activeButton ? null : page);
   };
@@ -81,7 +111,7 @@ function Header() {
   return (
     <AppBar position="absolute" color="transparent" sx={{ boxShadow: "none" }}>
       <Container
-        maxWidth={false}
+        maxWidth={true}
         sx={{
           padding: "0 1rem",
           boxShadow: 3,
@@ -96,40 +126,34 @@ function Header() {
             width: "100%",
           }}
         >
-          <>
-            {/* ====================Normal =================================== */}
-            {/* <Typography
-                sx={{
-                  fontFamily: "monospace",
-                  fontWeight: 400,
-                  letterSpacing: ".3rem",
-                  color: "#ffffff",
-                  textDecoration: "none",
-                  whiteSpace: "pre-wrap",
-                  letterSpacing: "0.1rem",
-                  fontSize: { xs: "0.75rem", sm: "1rem" },
-                  background:
-                    "linear-gradient(90deg, #0091D9 60%, #FFFFFF 100%)",
-                  padding: {
-                    xs: "5px",
-                    sm: "8px",
-                    md: "10px",
-                    lg: "12px",
-                  },
-                  display: { xs: "none", md: "flex" },
-                  flexDirection: "column",
-                  alignItems: {
-                    xs: "start",
-                    md: "start",
-                  },
-                  textAlign: {
-                    xs: "left",
-                    md: "left",
-                  },
-                  marginLeft: "-3rem",
-                  width: "270px",
-                }}
-              >
+          <Typography
+            sx={{
+              fontFamily: "monospace",
+              fontWeight: 400,
+              color: "#ffffff",
+              textDecoration: "none",
+              fontSize: { xs: "0.75rem", sm: "1rem" },
+              background: isNightTime()
+                ? "linear-gradient(90deg, #031F40 60%, #FFFFFF 100%)"
+                : "linear-gradient(90deg, #0091D9 60%, #FFFFFF 100%)",
+              padding: { xs: "5px", sm: "8px", md: "10px", lg: "12px" },
+              display: { xs: "none", md: "flex" },
+              flexDirection: "column",
+              alignItems: { xs: "start", md: "start" },
+              textAlign: { xs: "left", md: "left" },
+              marginLeft: "-3rem",
+              width: isPortrait ? "280px" : "350px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <div style={{ marginRight: "1rem" }}>
                 <div
                   style={{
                     fontSize: "1.25rem",
@@ -150,168 +174,20 @@ function Header() {
                 >
                   {currentDate}
                 </div>
-              </Typography> */}
-          </>
-
-          <>
-            {/* ===================== Moon ===================================== */}
-
-            {(currentHour >= 18 || currentHour < 6) && (
-              <Typography
-                sx={{
-                  fontFamily: "monospace",
-                  fontWeight: 400,
-                  letterSpacing: ".3rem",
-                  color: "#ffffff",
-                  textDecoration: "none",
-                  whiteSpace: "pre-wrap",
-                  letterSpacing: "0.1rem",
-                  fontSize: { xs: "0.75rem", sm: "1rem" },
-                  background:
-                    "linear-gradient(90deg, #031F40 60%, #FFFFFF 100%)",
-                  padding: {
-                    xs: "5px",
-                    sm: "8px",
-                    md: "10px",
-                    lg: "12px",
-                  },
-                  display: { xs: "none", md: "flex" },
-                  flexDirection: "column",
-                  alignItems: {
-                    xs: "start",
-                    md: "start",
-                  },
-                  textAlign: {
-                    xs: "left",
-                    md: "left",
-                  },
-                  marginLeft: "-3rem",
-                  width: isPortrait ? "280px" : "350px",
-                }}
-              >
-                <div
+              </div>
+              <div>
+                <img
+                  src={isNightTime() ? moon2 : sun}
+                  alt="Day/Night Icon"
                   style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    flexDirection: "row",
-                    alignItems: "center",
+                    height: isNightTime() ? 65 : 46,
+                    width: isNightTime() ? 65 : 46,
+                    marginLeft: "1rem",
                   }}
-                >
-                  <div style={{ marginRight: "1rem" }}>
-                    <div
-                      style={{
-                        fontSize: "1.25rem",
-                        fontWeight: 400,
-                        fontFamily:
-                          '"Roboto", "Helvetica", "Arial", sans-serif',
-                        letterSpacing: "0.1rem",
-                      }}
-                    >
-                      {currentTime}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "1.25rem",
-                        fontWeight: 400,
-                        fontFamily:
-                          '"Roboto", "Helvetica", "Arial", sans-serif',
-                        letterSpacing: "0.1rem",
-                      }}
-                    >
-                      {currentDate}
-                    </div>
-                  </div>
-
-                  <div>
-                    <img
-                      src={moon2}
-                      alt="Logo"
-                      style={{ height: 65, width: 65, marginLeft: "1rem" }}
-                    />
-                  </div>
-                </div>
-              </Typography>
-            )}
-
-            {/* ==================== Sun ======================================== */}
-
-            {currentHour >= 6 && currentHour < 18 && (
-              <Typography
-                sx={{
-                  fontFamily: "monospace",
-                  fontWeight: 400,
-                  letterSpacing: ".3rem",
-                  color: "#ffffff",
-                  textDecoration: "none",
-                  whiteSpace: "pre-wrap",
-                  letterSpacing: "0.1rem",
-                  fontSize: { xs: "0.75rem", sm: "1rem" },
-                  background:
-                    "linear-gradient(90deg, #0091D9 60%, #FFFFFF 100%)",
-                  padding: {
-                    xs: "5px",
-                    sm: "8px",
-                    md: "10px",
-                    lg: "12px",
-                  },
-                  display: { xs: "none", md: "flex" },
-                  flexDirection: "column",
-                  alignItems: {
-                    xs: "start",
-                    md: "start",
-                  },
-                  textAlign: {
-                    xs: "left",
-                    md: "left",
-                  },
-                  marginLeft: "-3rem",
-                  width: "350px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    flexDirection: "row",
-                    alignItems: "center",
-                  }}
-                >
-                  <div style={{ marginRight: "1rem" }}>
-                    <div
-                      style={{
-                        fontSize: "1.25rem",
-                        fontWeight: 400,
-                        fontFamily:
-                          '"Roboto", "Helvetica", "Arial", sans-serif',
-                        letterSpacing: "0.1rem",
-                      }}
-                    >
-                      {currentTime}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "1.25rem",
-                        fontWeight: 400,
-                        fontFamily:
-                          '"Roboto", "Helvetica", "Arial", sans-serif',
-                        letterSpacing: "0.1rem",
-                      }}
-                    >
-                      {currentDate}
-                    </div>
-                  </div>
-
-                  <div>
-                    <img
-                      src={sun}
-                      alt="Logo"
-                      style={{ height: 46, width: 46, marginLeft: "1rem" }}
-                    />
-                  </div>
-                </div>
-              </Typography>
-            )}
-          </>
+                />
+              </div>
+            </div>
+          </Typography>
 
           <Box sx={{ flexGrow: 1 }}>
             <Grid

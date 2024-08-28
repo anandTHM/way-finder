@@ -121,7 +121,7 @@ const Shops = () => {
                   </Box>
                 ))} */}
               {shops.map((icon, index) => (
-                <Box key={index}>
+                <Box key={index} >
                   <ShopFinderCard
                     icon={icon?.photos[0]?.aws_original_url}
                     showName={false}
