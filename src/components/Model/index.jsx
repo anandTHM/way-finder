@@ -101,10 +101,6 @@ function Model({ open, handleClose, hasIcon, onSubmitHandler, selectedUnit }) {
         bodyStyle: { fontSize: "18px" },
       });
     } catch (err) {
-      setError({
-        submit:
-          "An error occurred while submitting your details. Please try again.",
-      });
       toast.error(
         "An error occurred while submitting your details. Please try again.",
         {
@@ -112,6 +108,10 @@ function Model({ open, handleClose, hasIcon, onSubmitHandler, selectedUnit }) {
           bodyStyle: { fontSize: "18px" },
         }
       );
+      setError({
+        submit:
+          "An error occurred while submitting your details. Please try again.",
+      });
     } finally {
       setLoading(false);
     }

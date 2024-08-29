@@ -16,10 +16,10 @@ import star from "../../assets/star.svg";
 import { useMediaQuery } from "@mui/material";
 
 const leftSideBar = [
-  { name: "Shop Finder", to: "shopFinder" },
+  { name: "Shop Finder", to: "shop-finder" },
   { name: "Navigations", to: "navigation" },
   { name: "Amenities", to: "amenities" },
-  { name: "Customer Services", to: "customerServices" },
+  { name: "Customer Services", to: "customer-services" },
   { name: "Events", to: "events" },
 ];
 

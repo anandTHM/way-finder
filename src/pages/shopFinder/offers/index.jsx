@@ -199,7 +199,7 @@ const Offers = () => {
   const onSubmitHandler = async (payload) => {
     const url = "/sendMail";
     const queryParams = {
-      organizationId: organizationId,
+      // organizationId: organizationId,
       email: payload.email,
       name: payload.name,
       countryCode: "+91",
@@ -215,6 +215,7 @@ const Offers = () => {
       console.log("Success:", result);
     } catch (error) {
       console.error("Error submitting form:", error);
+      throw error;
     }
   };
 
@@ -272,7 +273,10 @@ const Offers = () => {
       >
         <ArrowBackIcon
           sx={{ fontSize: "2rem", cursor: "pointer" }}
-          onClick={() =>{ setSelectedCategories([]); navigate(-1)}}
+          onClick={() => {
+            setSelectedCategories([]);
+            navigate(-1);
+          }}
         />
         <Typography variant="h5" sx={{ fontSize: "1.5rem" }}>
           Offers

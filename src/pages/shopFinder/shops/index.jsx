@@ -126,7 +126,7 @@ const Shops = () => {
                     icon={icon?.photos[0]?.aws_original_url}
                     showName={false}
                     onClick={() =>
-                      navigate(`/${id}/shops/details`, {
+                      navigate(`/${id}/shops/${icon.id}`, {
                         state: { param: icon },
                       })
                     }

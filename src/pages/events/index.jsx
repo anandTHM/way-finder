@@ -250,6 +250,7 @@ const EventsCardCarousel = () => {
       console.log("Success:", result);
     } catch (error) {
       console.error("Error submitting form:", error);
+      throw error;
     }
   };
 

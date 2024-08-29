@@ -17,7 +17,15 @@ import CustomCard from "./Card";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { ContextProvider } from "../GlobalContext";
 
-const cardColors = ["#EEFDED", "#FFF1F1", "#FFF1F1", "#FEF7EB", "#F1F1FF","#FFEDE8","#FEE8F0"];
+const cardColors = [
+  "#EEFDED",
+  "#FFF1F1",
+  "#FFF1F1",
+  "#FEF7EB",
+  "#F1F1FF",
+  "#FFEDE8",
+  "#FEE8F0",
+];
 const cardIcons = [
   Icons.game,
   Icons.food,
@@ -25,7 +33,7 @@ const cardIcons = [
   Icons.cafe,
   Icons.laptop,
   Icons.men,
-  Icons.kid
+  Icons.kid,
 ];
 
 const categories = [
@@ -55,15 +63,15 @@ const categories = [
     icon: Icons.laptop,
   },
   {
-    name:"Clothes",
-    color:"#FFEDE8",
-    icon:Icons.mens,
+    name: "Clothes",
+    color: "#FFEDE8",
+    icon: Icons.mens,
   },
   {
-    name:"Kid's Wear",
-    color:"#FEE8F0",
-    icon:Icons.kid,
-  }
+    name: "Kid's Wear",
+    color: "#FEE8F0",
+    icon: Icons.kid,
+  },
 ];
 
 const theme = createTheme({

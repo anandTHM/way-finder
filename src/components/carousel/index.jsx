@@ -40,7 +40,7 @@ function CustomCarousel({ offers, has, isPortrait }) {
   const onSubmitHandler = async (payload) => {
     const url = "/sendMail";
     const queryParams = {
-      organizationId: organizationId,
+      // organizationId: organizationId,
       email: payload.email,
       name: payload.name,
       countryCode: "+91",
@@ -56,6 +56,7 @@ function CustomCarousel({ offers, has, isPortrait }) {
       console.log("Success:", result);
     } catch (error) {
       console.error("Error submitting form:", error);
+      throw error;
     }
   };
 

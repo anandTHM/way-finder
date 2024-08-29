@@ -22,11 +22,11 @@ const RoutesComponent = () => {
         <Route index element={<Navigation />} />
         <Route path="navigation" element={<Navigation />} />
         <Route path="amenities" element={<Amenities />} />
-        <Route path="customerServices" element={<CustomerSupport />} />
-        <Route path="shopFinder" element={<ShopFinder />} />
+        <Route path="customer-services" element={<CustomerSupport />} />
+        <Route path="shop-finder" element={<ShopFinder />} />
         <Route path="offers" element={<Offers />} />
         <Route path="shops" element={<Shops />} />
-        <Route path="shops/details" element={<ShopDetails />} />
+        <Route path="shops/:id" element={<ShopDetails />} />
         <Route path="events" element={<Events />} />
         <Route path="events/allEvents" element={<Event />} />
         <Route path="navigation/shops" element={<NavigationShop />} />
