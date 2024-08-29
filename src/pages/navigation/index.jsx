@@ -33,6 +33,11 @@ const Navigation = () => {
 
   const [paramId, setParamId] = useState(param?.pathId);
 
+  const displayNameField = selectedUnit?.customFields?.filter(
+    (field) =>
+      field.fieldLabel?.toLowerCase().includes("display name")
+  )[0];
+
   useEffect(() => {
     loadSmplrJs("esm")
       .then((smplr) => {
@@ -245,7 +250,7 @@ const Navigation = () => {
     });
 
     const id = toast.success(
-      `${unit || selectedUnit?.block || param?.title} is on floor ${
+      `${unit || selectedUnit?.block || displayNameField?.feildValue || param?.title} is on floor ${
         data[0].levelIndex + 1
       }. The shortest path has been identified.`,
       {
@@ -262,7 +267,7 @@ const Navigation = () => {
     let id;
     if (data.length > 1) {
       id = toast.success(
-        `The unit ${unit} is located on floor ${
+        `The unit ${unit || selectedUnit?.block || displayNameField?.feildValue } is located on floor ${
           data[data.length - 1].levelIndex + 1
         }. Switching floors with multiple paths.`,
         {
@@ -273,7 +278,7 @@ const Navigation = () => {
       );
     } else {
       id = toast.success(
-        `The unit ${unit} is located on floor ${
+        `The unit ${unit || selectedUnit?.block || displayNameField?.feildValue } is located on floor ${
           data[data.length - 1].levelIndex + 1
         }.The sort shortest path has been identified. `,
         {
