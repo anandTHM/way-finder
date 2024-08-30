@@ -34,7 +34,7 @@ function AmenitiesCard({ icon, title, description }) {
             fontSize: 16,
             overflowWrap: "break-word",
             wordBreak: "break-word",
-            width: "240px",
+            width: "280px",
             whiteSpace: "normal",
           }}
           color="text.secondary"
