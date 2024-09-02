@@ -150,7 +150,7 @@ const Shops = () => {
                 sx={{ fontSize: "22px" }}
                 color="textSecondary"
               >
-                No data available.
+                No data available
               </Typography>
             </Box>
           )}

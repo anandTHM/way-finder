@@ -557,7 +557,7 @@ const Shops = ({ dataHandler, handleResetSpace }) => {
                   fontSize: "18px",
                 }}
               >
-                No category is selected. Please select a category.
+                No category is selected, Please select a category
               </Typography>
             )
           ) : (
