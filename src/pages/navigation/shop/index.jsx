@@ -210,9 +210,9 @@ const Shops = ({ dataHandler, handleResetSpace }) => {
   const theme = useTheme();
   const isPortrait = useMediaQuery("(orientation: portrait)");
 
-  useEffect(() => {
-    getAllUnits();
-  }, []);
+  // useEffect(() => {
+  //   getAllUnits();
+  // }, []);
 
   useEffect(() => {
     if (selectedCategories.length > 0) {
