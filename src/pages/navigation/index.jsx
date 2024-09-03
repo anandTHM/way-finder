@@ -10,6 +10,32 @@ import "./navigation.css";
 import { ContextProvider } from "../../GlobalContext";
 import icon from "../../assets/yourAreHere.svg";
 
+const cardColors = [
+  "##f59f00",
+  "#f03e3e",
+  "#d6336c",
+  "#ae3ec9",
+  "#7048e8",
+  "#4263eb",
+  "#1098ad",
+  "#37b24d",
+  "#f76707",
+  "#20c997",
+  "#3bc9db",
+  "#4dabf7",
+  "#748ffc",
+  "#ff8787"
+];
+
+const hashCode = (str) => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash << 5) - hash + str.charCodeAt(i);
+    hash |= 0; // Convert to 32-bit integer
+  }
+  return Math.abs(hash) % 16; // Use modulo 6 to ensure the result is between 0 and 5
+};
+
 const Navigation = () => {
   const spaceRef = React.useRef();
   const location = useLocation();
@@ -30,6 +56,7 @@ const Navigation = () => {
   const [showButton, setShowButton] = useState(false);
   const [toastId, setToastId] = useState(null);
   const [unit, setUnit] = useState("");
+  const [rooms,setRooms] = useState([]);
 
   const [paramId, setParamId] = useState(param?.pathId);
 
@@ -61,6 +88,36 @@ const Navigation = () => {
 
     let dataLayer = [];
 
+    if (spaceRef) {
+      spaceRef.current.addDataLayer({
+        id: 'rooms',
+        type: 'polygon',
+        data: rooms,
+        // tooltip: (d) => {
+        //   let display = "";
+        //   if (d.address)
+        //     display += d.address;
+        //   if (d.occupiedBy)
+        //     display += "\n" + d.occupiedBy;
+        //   if (d.occupancyStatus)
+        //     display += "\n" + d.occupancyStatus;
+        //   return display;
+        // },
+        tooltip:(d)=>d.name,
+        onClick: (d) => console.log('Room clicked:', d),
+        color: (d) => {
+          if (d.extras?.listingId) {
+            // Determine color index based on some criteria, here we just cycle through cardColors
+            const index = hashCode(d.extras.listingId);
+            console.log(index,"====");
+            return cardColors[index];
+          } 
+        },
+        alpha: 0.6,
+        height: 6.36,
+      });
+    }
+
     if (selectedPath && selectedPath.steps?.length > 0) {
       selectedPath.steps.forEach((step) => {
         currentScreen[0].assets.forEach((item) => {
@@ -86,11 +143,27 @@ const Navigation = () => {
       );
       singleFloorHandler(data);
     }
+
+
+    return () => {
+      if (spaceRef.current) {
+        spaceRef.current.removeDataLayer('rooms');
+      }
+    };
+
   }, [viewerReady, selectedPath, paramId]);
 
   useEffect(() => {
     mapData();
   }, [dataLoaded]);
+
+
+  const mapRoomsWithListing = async (rooms) => {
+
+    console.log("rooms", rooms);
+    rooms = rooms.filter(room => room.coordinates && room.coordinates.length > 0);
+    setRooms(rooms);
+  }
 
   const fetchData = async (smplr) => {
     const currentUrl = window.location.href;
@@ -109,6 +182,10 @@ const Navigation = () => {
       const space = await smplrClient.getSpace(
         "cf250454-c195-4a33-bd54-d1bdabcbb680"
       );
+
+   
+      const assetMap = space?.assetmap[0]
+      mapRoomsWithListing(assetMap.assets);
 
       const presentScreen = space?.assetmap.filter((item) => item.id === id);
       setCurrentScreen(presentScreen);
@@ -257,6 +334,33 @@ const Navigation = () => {
       width: 10,
     });
 
+    spaceRef.current.addDataLayer({
+      id: 'rooms',
+      type: 'polygon',
+      data: rooms,
+      // tooltip: (d) => {
+      //   let display = "";
+      //   if (d.address)
+      //     display += d.address;
+      //   if (d.occupiedBy)
+      //     display += "\n" + d.occupiedBy;
+      //   if (d.occupancyStatus)
+      //     display += "\n" + d.occupancyStatus;
+      //   return display;
+      // },
+      tooltip:(d)=>d.name,
+      onClick: (d) => console.log('Room clicked:', d),
+      color: (d) => {
+        if (d.extras?.listingId) {
+          // Determine color index based on some criteria, here we just cycle through cardColors
+          const index = hashCode(d.extras.listingId);
+          return cardColors[index];
+        } 
+      },
+      alpha: 0.6,
+      height: 6.36,
+    });
+
     const id = toast.success(
       `${unit || selectedUnit?.block || displayNameField?.feildValue || param?.title} is on floor ${
         data[0].levelIndex + 1
@@ -355,6 +459,33 @@ const Navigation = () => {
               diameter: 3,
               color: "#973bed",
               anchor: "button",
+            });
+
+            spaceRef.current.addDataLayer({
+              id: 'rooms',
+              type: 'polygon',
+              data: rooms,
+              // tooltip: (d) => {
+              //   let display = "";
+              //   if (d.address)
+              //     display += d.address;
+              //   if (d.occupiedBy)
+              //     display += "\n" + d.occupiedBy;
+              //   if (d.occupancyStatus)
+              //     display += "\n" + d.occupancyStatus;
+              //   return display;
+              // },
+              tooltip:(d)=>d.name,
+              onClick: (d) => console.log('Room clicked:', d),
+              color: (d) => {
+                if (d.extras?.listingId) {
+                  // Determine color index based on some criteria, here we just cycle through cardColors
+                  const index = hashCode(d.extras.listingId);
+                  return cardColors[index];
+                } 
+              },
+              alpha: 0.6,
+              height: 6.36,
             });
 
             spaceRef.current.addDataLayer({
