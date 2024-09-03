@@ -728,7 +728,7 @@ const Navigation = () => {
           <Box
             sx={{
               marginTop: "15px",
-              maxHeight: "calc(50vh - 64px)",
+              maxHeight: "calc(100vh - 64px - 15px)",
               overflowY: "auto",
               width: "100%",
               
