@@ -618,7 +618,7 @@ const Navigation = () => {
               </Box>
             </Grid>
             <Grid item xs={4}>
-              <Box sx={{ maxHeight: "calc(100vh - 64px)", overflowY: "auto" }}>
+              <Box sx={{ maxHeight: "calc(110vh - 64px)", overflowY: "auto" }}>
                 <Shops
                   dataHandler={dataHandler}
                   handleResetSpace={handleResetSpace}
@@ -728,7 +728,7 @@ const Navigation = () => {
           <Box
             sx={{
               marginTop: "15px",
-              maxHeight: "calc(100vh - 64px - 15px)",
+              maxHeight: "calc(60vh - 64px)",
               overflowY: "auto",
               width: "100%",
               
