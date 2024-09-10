@@ -354,7 +354,7 @@ const Navigation = () => {
           }
         },
         cameraPlacement: initialCameraPlacement,
-        experimentalFacadeBasedPerformance:true,
+        // experimentalFacadeBasedPerformance:true,
         onError: (errorMessage) =>
           console.error("Could not start viewer", errorMessage),
         onVisibleLevelsChanged: (visibleLevels) => {
