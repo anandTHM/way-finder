@@ -286,8 +286,6 @@ const Navigation = () => {
         const matchedUnit = response.filter((unit) => unit._id === listingId);
       
         const primaryTag = matchedUnit[0]?.tags?.[0] || null;
-
-        console.log("primaryTag", primaryTag);
       
         const matchedCategory = primaryTag 
           ? categories.find((category) => category.name.toLowerCase() === primaryTag.toLowerCase()) 
@@ -356,6 +354,7 @@ const Navigation = () => {
           }
         },
         cameraPlacement: initialCameraPlacement,
+        experimentalFacadeBasedPerformance:true,
         onError: (errorMessage) =>
           console.error("Could not start viewer", errorMessage),
         onVisibleLevelsChanged: (visibleLevels) => {
@@ -367,7 +366,7 @@ const Navigation = () => {
         disableCameraControls: false,
         disableCameraRotation: false,
         hideNavigationButtons: false,
-        hideLevelPicker: false,
+        hideLevelPicker: true,
         
       });
     }
