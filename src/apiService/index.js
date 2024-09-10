@@ -20,9 +20,7 @@ export const fetchData = async (endpoint, queryParams = {}) => {
     });
 
     if (!response.ok) {
-      // Log the status and statusText for debugging
       console.error(`Error ${response.status}: ${response.statusText}`);
-      // Throwing an error so it can be caught in the catch block
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
@@ -30,7 +28,7 @@ export const fetchData = async (endpoint, queryParams = {}) => {
     return data;
   } catch (error) {
     console.error("There was a problem with the fetch operation:", error);
-    throw error; // This ensures that the calling function can catch the error
+    throw error;
   }
 };
 

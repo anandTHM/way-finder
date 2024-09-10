@@ -9,9 +9,50 @@ import Shops from "./shop";
 import "./navigation.css";
 import { ContextProvider } from "../../GlobalContext";
 import icon from "../../assets/yourAreHere.svg";
+import { fetchData as fetchDataService } from "../../apiService";
+import { Icons } from "../../assets/svgIcons";
+
+
+const categories = [
+  {
+    name: "Games",
+    color: "#f59f00", 
+    icon: Icons.game,
+  },
+  {
+    name: "Food & Beverage ",
+    color: "#f03e3e", 
+    icon: Icons.food,
+  },
+  {
+    name: "Food",
+    color: "#d6336c", 
+    icon: Icons.food,
+  },
+  {
+    name: "Cafe",
+    color: "#ae3ec9",
+    icon: Icons.cafe,
+  },
+  {
+    name: "Technology",
+    color: "#7048e8", 
+    icon: Icons.laptop,
+  },
+  {
+    name: "Clothes",
+    color: "#4263eb",
+    icon: Icons.mens,
+  },
+  {
+    name: "Kid's Wear",
+    color: "#37b24d",
+    icon: Icons.kid,
+  },
+];
 
 const cardColors = [
-  "##f59f00",
+  "#f59f00",
   "#f03e3e",
   "#d6336c",
   "#ae3ec9",
@@ -31,19 +72,21 @@ const hashCode = (str) => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = (hash << 5) - hash + str.charCodeAt(i);
-    hash |= 0; // Convert to 32-bit integer
+    hash |= 0; 
   }
-  return Math.abs(hash) % 16; // Use modulo 6 to ensure the result is between 0 and 5
+  return Math.abs(hash) % cardColors.length;
 };
 
 const Navigation = () => {
-  const spaceRef = React.useRef();
+  const spaceRef = useRef();
   const location = useLocation();
   const param = location.state?.selectedItem;
 
   const isPortrait = useMediaQuery("(orientation: portrait)");
 
-  const { setSelectedUnit, selectedUnit, selectedPath, setSelectedPath } =
+  const organizationId = localStorage.getItem("Organization");
+
+  const { setSelectedUnit, selectedUnit, selectedPath, setSelectedPath , setUnits } =
     useContext(ContextProvider);
 
   const id = localStorage.getItem("ScreenId");
@@ -72,6 +115,7 @@ const Navigation = () => {
           spaceId: "cf250454-c195-4a33-bd54-d1bdabcbb680",
           clientToken: "pub_c24233b8ab93411ba3623ca53306d66e",
           containerId: "test",
+          whiteLabel:false,
         });
         fetchData(smplr);
       })
@@ -89,34 +133,78 @@ const Navigation = () => {
     let dataLayer = [];
 
     if (spaceRef) {
-      spaceRef.current.addDataLayer({
-        id: 'rooms',
-        type: 'polygon',
-        data: rooms,
-        // tooltip: (d) => {
-        //   let display = "";
-        //   if (d.address)
-        //     display += d.address;
-        //   if (d.occupiedBy)
-        //     display += "\n" + d.occupiedBy;
-        //   if (d.occupancyStatus)
-        //     display += "\n" + d.occupancyStatus;
-        //   return display;
-        // },
-        tooltip:(d)=>d.name,
-        onClick: (d) => console.log('Room clicked:', d),
-        color: (d) => {
-          if (d.extras?.listingId) {
-            // Determine color index based on some criteria, here we just cycle through cardColors
-            const index = hashCode(d.extras.listingId);
-            console.log(index,"====");
-            return cardColors[index];
-          } 
-        },
-        alpha: 0.6,
-        height: 6.36,
-      });
+    //   spaceRef.current.addDataLayer({
+    //     id: 'rooms',
+    //     type: 'polygon',
+    //     data: rooms,
+    //     tooltip: (d) => `
+    //         <div style="display: flex; align-items: center; line-height: 1; padding: 0; margin: 0;">
+    //             <img src="https://uploads-ssl.webflow.com/5eca8aa0518a6eb17eda7575/65a572aed02ee07c9a7dde5e_Pin1.png" 
+    //                  alt="Icon" 
+    //                  style="width: 12px; height: 12px; margin-right: 2px;" />
+    //             <span style="padding: 0; margin: 0;">${d.name}</span>
+    //         </div>
+    //     `,
+    //     persistentTooltip: true,
+    //     tooltipContainerStyle: `
+    //         font-size: 10px;
+    //         line-height: 1;
+    //         padding: 2px;
+    //         max-width: 100px;
+    //         background-color: rgba(255, 255, 255, 0.9);
+    //         border-radius: 3px;
+    //         box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+    //     `,
+    //     onClick: (d) => console.log('Room clicked:', d),
+    //     color: (d) => {
+    //         if (d.extras?.listingId) {
+    //             const index = hashCode(d.extras.listingId);
+    //             return cardColors[index];
+    //         } 
+    //     },
+    //     alpha: 0.6,
+    //     height: 6.36,
+    // });
+    
+
+    spaceRef.current.addDataLayer({
+      id: 'rooms',
+      type: 'polygon',
+      data: rooms,
+      tooltip: (d) => `
+      <div style="
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          width: 20px; 
+          height: 20px; 
+          padding: 0; 
+          margin: 0; 
+          border-radius: 50%;
+          overflow: hidden;
+      ">
+          <img src="${d.photos ? d.photos : 'https://uploads-ssl.webflow.com/5eca8aa0518a6eb17eda7575/65a572aed02ee07c9a7dde5e_Pin1.png'}"
+               alt="Icon" 
+               style="width: 100%; height: 100%;" />
+      </div>
+    `,    
+      persistentTooltip: true,
+      tooltipContainerStyle: `
+          font-size: 10px;
+          line-height: 1;
+          padding: 2px;
+          max-width: 100px;
+          background-color: rgba(255, 255, 255, 0);
+          border-radius: 50%;
+          box-shadow: none;
+      `,
+      onClick: (d) => console.log('Room clicked:', d),
+      color: (d) =>d.categoryDetails[0]?.color || "#748ffc",
+      alpha: 0.6
+  });
+
     }
+
 
     if (selectedPath && selectedPath.steps?.length > 0) {
       selectedPath.steps.forEach((step) => {
@@ -147,7 +235,7 @@ const Navigation = () => {
 
     return () => {
       if (spaceRef.current) {
-        spaceRef.current.removeDataLayer('rooms');
+        // spaceRef.current.removeDataLayer('rooms');
       }
     };
 
@@ -158,12 +246,11 @@ const Navigation = () => {
   }, [dataLoaded]);
 
 
-  const mapRoomsWithListing = async (rooms) => {
+  // const mapRoomsWithListing = async (rooms) => {
 
-    console.log("rooms", rooms);
-    rooms = rooms.filter(room => room.coordinates && room.coordinates.length > 0);
-    setRooms(rooms);
-  }
+  //   rooms = rooms.filter(room => room.coordinates && room.coordinates.length > 0);
+  //   setRooms(rooms);
+  // }
 
   const fetchData = async (smplr) => {
     const currentUrl = window.location.href;
@@ -183,11 +270,55 @@ const Navigation = () => {
         "cf250454-c195-4a33-bd54-d1bdabcbb680"
       );
 
+      const polygons = space?.assetmap.filter((item)=>item.type==="polygon");
+      // const dataLayer=polygons[0].assets.filter((item)=>item.levelIndex===floors);
+
+
+
+      const response = await fetchDataService("/getAllListingbyOrganizationId",{
+        organizationId,
+        smplrSpaceId:id
+      })
+
+      setUnits(response)
+      const mergedData = polygons[0]?.assets.map((item) => {
+        const listingId = item.extras?.listingId;
+        const matchedUnit = response.filter((unit) => unit._id === listingId);
+      
+        const primaryTag = matchedUnit[0]?.tags?.[0] || null;
+
+        console.log("primaryTag", primaryTag);
+      
+        const matchedCategory = primaryTag 
+          ? categories.find((category) => category.name.toLowerCase() === primaryTag.toLowerCase()) 
+          : null;
+      
+        return {
+          ...item,
+          tags: matchedUnit[0]?.tags || [],
+          photos:matchedUnit[0]?.photos?.aws_original_url ,
+          categoryDetails: matchedCategory ? [matchedCategory] : [], 
+        };
+      });
+      
+      
+      setRooms(mergedData)
+
+      // dataLayer.map((item) => {
+      //   const listingId = item.extras?.listingId;
+      //   console.log("listingId", units);
+      //   //  units.map((unit) => console.log("unit.id", unit.id));
+      //   // console.log("newUnits", newUnits);
+      // });
+
+
    
-      const assetMap = space?.assetmap[0]
-      mapRoomsWithListing(assetMap.assets);
+      // const assetMap = space?.assetmap[0]
+      // mapRoomsWithListing(assetMap.assets);
+
 
       const presentScreen = space?.assetmap.filter((item) => item.id === id);
+      // console.log("presentScreen", presentScreen);
       setCurrentScreen(presentScreen);
       setDataLoaded(true);
     } catch (error) {
@@ -236,15 +367,17 @@ const Navigation = () => {
         disableCameraControls: false,
         disableCameraRotation: false,
         hideNavigationButtons: false,
-        hideLevelPicker: true,
+        hideLevelPicker: false,
+        
       });
     }
   };
 
   const screenStartPoint = () => {
     if (spaceRef.current) {
+      spaceRef?.current.removeAllDataLayers();
       spaceRef.current.addDataLayer({
-        id: "start-end",
+        id: "screenn-start-point",
         type: "point",
         shape: "sphere",
         data: [
@@ -270,10 +403,13 @@ const Navigation = () => {
     const startPosition = data[0].coordinates[0];
     const endPosition = data[0].coordinates[n - 1];
 
+    spaceRef?.current.removeDataLayer('screenn-start-point');
+
+
     spaceRef?.current.addDataLayer({
       id: "way",
       type: "dotted-polyline",
-      data: [data[0]].map((d) => ({
+      data: [data[0]]?.map((d) => ({
         ...d,
         coordinates: d.coordinates.map((pt) => ({
           ...pt,
@@ -334,32 +470,47 @@ const Navigation = () => {
       width: 10,
     });
 
-    spaceRef.current.addDataLayer({
-      id: 'rooms',
-      type: 'polygon',
-      data: rooms,
-      // tooltip: (d) => {
-      //   let display = "";
-      //   if (d.address)
-      //     display += d.address;
-      //   if (d.occupiedBy)
-      //     display += "\n" + d.occupiedBy;
-      //   if (d.occupancyStatus)
-      //     display += "\n" + d.occupancyStatus;
-      //   return display;
-      // },
-      tooltip:(d)=>d.name,
-      onClick: (d) => console.log('Room clicked:', d),
-      color: (d) => {
-        if (d.extras?.listingId) {
-          // Determine color index based on some criteria, here we just cycle through cardColors
-          const index = hashCode(d.extras.listingId);
-          return cardColors[index];
-        } 
-      },
-      alpha: 0.6,
-      height: 6.36,
-    });
+  //   spaceRef.current.addDataLayer({
+  //     id: 'rooms',
+  //     type: 'polygon',
+  //     data: rooms,
+  //     tooltip: (d) => `
+  //         <div style="
+  //             display: flex; 
+  //             align-items: center; 
+  //             justify-content: center; 
+  //             width: 20px; 
+  //             height: 20px; 
+  //             padding: 0; 
+  //             margin: 0; 
+  //             border-radius: 50%;
+  //             overflow: hidden;
+  //         ">
+  //             <img src="https://uploads-ssl.webflow.com/5eca8aa0518a6eb17eda7575/65a572aed02ee07c9a7dde5e_Pin1.png" 
+  //                  alt="Icon" 
+  //                  style="width: 100%; height: 100%;" />
+  //         </div>
+  //     `,
+  //     persistentTooltip: true,
+  //     tooltipContainerStyle: `
+  //         font-size: 10px;
+  //         line-height: 1;
+  //         padding: 2px;
+  //         max-width: 100px;
+  //         background-color: rgba(255, 255, 255, 0);
+  //         border-radius: 50%;
+  //         box-shadow: none;
+  //     `,
+  //     onClick: (d) => console.log('Room clicked:', d),
+  //     color: (d) => {
+  //         if (d.extras?.listingId) {
+  //             const index = hashCode(d.extras.listingId);
+  //             return cardColors[index];
+  //         }
+  //     },
+  //     alpha: 0.6
+  // });
+  
 
     const id = toast.success(
       `${unit || selectedUnit?.block || displayNameField?.feildValue || param?.title} is on floor ${
@@ -376,6 +527,9 @@ const Navigation = () => {
   };
 
   const multiFloorHandler = (data) => {
+    spaceRef?.current.removeDataLayer('screenn-start-point');
+    // spaceRef?.current.removeDataLayer('rooms');
+
     let id;
     if (data.length > 1) {
       id = toast.success(
@@ -402,10 +556,8 @@ const Navigation = () => {
     }
 
     setToastId(id);
-    spaceRef?.current.removeAllDataLayers();
-
     // Create multiple timeouts
-    data.forEach((path, index) => {
+    data?.forEach((path, index) => {
       setTimeout(
         () => {
           if (currentPathIdRef.current === selectedPath) {
@@ -461,33 +613,47 @@ const Navigation = () => {
               anchor: "button",
             });
 
-            spaceRef.current.addDataLayer({
-              id: 'rooms',
-              type: 'polygon',
-              data: rooms,
-              // tooltip: (d) => {
-              //   let display = "";
-              //   if (d.address)
-              //     display += d.address;
-              //   if (d.occupiedBy)
-              //     display += "\n" + d.occupiedBy;
-              //   if (d.occupancyStatus)
-              //     display += "\n" + d.occupancyStatus;
-              //   return display;
-              // },
-              tooltip:(d)=>d.name,
-              onClick: (d) => console.log('Room clicked:', d),
-              color: (d) => {
-                if (d.extras?.listingId) {
-                  // Determine color index based on some criteria, here we just cycle through cardColors
-                  const index = hashCode(d.extras.listingId);
-                  return cardColors[index];
-                } 
-              },
-              alpha: 0.6,
-              height: 6.36,
-            });
-
+          //   spaceRef.current.addDataLayer({
+          //     id: 'rooms',
+          //     type: 'polygon',
+          //     data: rooms,
+          //     tooltip: (d) => `
+          //         <div style="
+          //             display: flex; 
+          //             align-items: center; 
+          //             justify-content: center; 
+          //             width: 20px; 
+          //             height: 20px; 
+          //             padding: 0; 
+          //             margin: 0; 
+          //             border-radius: 50%;
+          //             overflow: hidden;
+          //         ">
+          //             <img src="https://uploads-ssl.webflow.com/5eca8aa0518a6eb17eda7575/65a572aed02ee07c9a7dde5e_Pin1.png" 
+          //                  alt="Icon" 
+          //                  style="width: 100%; height: 100%;" />
+          //         </div>
+          //     `,
+          //     persistentTooltip: true,
+          //     tooltipContainerStyle: `
+          //         font-size: 10px;
+          //         line-height: 1;
+          //         padding: 2px;
+          //         max-width: 100px;
+          //         background-color: rgba(255, 255, 255, 0);
+          //         border-radius: 50%;
+          //         box-shadow: none;
+          //     `,
+          //     onClick: (d) => console.log('Room clicked:', d),
+          //     color: (d) => {
+          //         if (d.extras?.listingId) {
+          //             const index = hashCode(d.extras.listingId);
+          //             return cardColors[index];
+          //         }
+          //     },
+          //     alpha: 0.6
+          // });
+          
             spaceRef.current.addDataLayer({
               id: `end-${index}-new`,
               type: "icon",
@@ -519,9 +685,11 @@ const Navigation = () => {
     });
   };
   const dataHandler = (data, item) => {
+    console.log("data", data,item);
     setUnit(item.block);
 
-    spaceRef?.current.removeAllDataLayers();
+    spaceRef?.current.removeDataLayer('screenn-start-point');
+    // spaceRef?.current.removeDataLayer('rooms');
     if (toastId) {
       toast.dismiss(toastId);
     }
@@ -550,7 +718,7 @@ const Navigation = () => {
     if (selectedDirection.length > 0) {
       // spaceRef?.current.showUpToLevel(selectedDirection[0].levelIndex);
       spaceRef?.current.showUpToLevel(0);
-      spaceRef?.current.removeAllDataLayers();
+      // spaceRef?.current.removeAllDataLayers();
     } else {
       spaceRef?.current.showUpToLevel(0);
     }

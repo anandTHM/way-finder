@@ -199,7 +199,7 @@ const Offers = () => {
   const onSubmitHandler = async (payload) => {
     const url = "/sendMail";
     const queryParams = {
-      // organizationId: organizationId,
+      organizationId: organizationId,
       email: payload.email,
       name: payload.name,
       countryCode: "+91",

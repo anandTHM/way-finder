@@ -16,6 +16,8 @@ const ContextConsumer = ({ children }) => {
     wayFinderDropdownOptions?.length > 0 ? wayFinderDropdownOptions[0] : null
   );
   const [selectedCategory, setSelectedCategory] = useState({});
+  const [units, setUnits] = useState([]);
+
 
   useEffect(() => {
     localStorage.setItem("Organization", organizationId);
@@ -41,6 +43,8 @@ const ContextConsumer = ({ children }) => {
       setSelectedCategories,
       selectedPath,
       setSelectedPath,
+      units,
+      setUnits
     }),
     [
       defaultRoute,
@@ -51,6 +55,7 @@ const ContextConsumer = ({ children }) => {
       selectedUnit,
       selectedCategories,
       selectedPath,
+      units,
     ]
   );
 

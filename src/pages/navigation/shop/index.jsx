@@ -198,10 +198,10 @@ const Shops = ({ dataHandler, handleResetSpace }) => {
   const organizationId = "5943d4efa3d24b443f4008a2";
   const screenId = localStorage.getItem("ScreenId");
 
-  const { activeButton, setActiveButton, selectedUnit, setSelectedUnit } =
+  const { activeButton, setActiveButton, selectedUnit, setSelectedUnit , units , setUnits } =
     useContext(ContextProvider);
 
-  const [units, setUnits] = useState([]);
+  // const [units, setUnits] = useState([]);
   // const [categories, setCategories] = useState([]);
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -219,7 +219,7 @@ const Shops = ({ dataHandler, handleResetSpace }) => {
       fetchUnitsForCategories(selectedCategories);
     } else {
       setUnits([]);
-      getAllUnits();
+      // getAllUnits();
     }
   }, [selectedCategories]);
 
@@ -291,6 +291,8 @@ const Shops = ({ dataHandler, handleResetSpace }) => {
       };
 
       const data = await fetchData("/getRoutesByUnitId", queryParams);
+
+      console.log("data ==", data);
 
       dataHandler(data, item);
     } catch (error) {
