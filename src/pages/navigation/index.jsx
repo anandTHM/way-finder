@@ -374,7 +374,7 @@ const Navigation = () => {
 
   const screenStartPoint = () => {
     if (spaceRef.current) {
-      // spaceRef?.current.removeAllDataLayers();
+      spaceRef?.current.removeAllDataLayers();
       spaceRef.current.addDataLayer({
         id: "screenn-start-point",
         type: "point",
