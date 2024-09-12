@@ -18,7 +18,6 @@ const ContextConsumer = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState({});
   const [units, setUnits] = useState([]);
 
-
   useEffect(() => {
     localStorage.setItem("Organization", organizationId);
     sessionStorage.setItem("defaultRoute", defaultRoute);
